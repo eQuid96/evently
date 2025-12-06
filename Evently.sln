@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		docker-compose.yaml = docker-compose.yaml
 		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Modules.Events", "src\Modules\Evently.Modules.Events\Evently.Modules.Events.csproj", "{EEAC2606-DDE6-4FD5-925E-5066529AE04B}"

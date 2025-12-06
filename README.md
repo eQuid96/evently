@@ -43,20 +43,9 @@ Modules interact via well-defined internal events rather than shared models, ena
 
 ## 🛠️ Tech Stack
 
-- **C# / .NET Core**
+- **C# / .NET Core 10**
 - **Entity Framework Core**
 - **PostgreSQL**
 - **MediatR or equivalent (internal communication)**
 - **FluentValidation** (input validation)
-- **Docker** (optional, for local development)
-- **xUnit / NUnit** (testing, depending on project evolution)
-
----
-
-## 🚀 Getting Started
-
-### **Prerequisites**
-
-- .NET SDK 8+
-- PostgreSQL database
-- Docker
+- **Docker**
