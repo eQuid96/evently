@@ -1,0 +1,17 @@
+﻿<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup Label="Database">
+    <PackageVersion Include="EFCore.NamingConventions" Version="8.0.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+  </ItemGroup>
+  <ItemGroup Label="Code Anbalysis">
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.24.0.89429" />
+  </ItemGroup>
+  <ItemGroup Label="Docs">
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+</Project>
