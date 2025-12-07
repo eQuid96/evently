@@ -1,5 +1,5 @@
 using Evently.Api.Extensions;
-using Evently.Modules.Events;
+using Evently.Modules.Events.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -22,4 +22,4 @@ if (app.Environment.IsDevelopment())
 
 EventsModule.MapEndPoints(app);
 
-app.Run();
+await app.RunAsync();

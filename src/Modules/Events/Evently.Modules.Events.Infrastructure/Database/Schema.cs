@@ -1,4 +1,4 @@
-﻿namespace Evently.Modules.Events.Database;
+﻿namespace Evently.Modules.Events.Infrastructure.Database;
 
 public static class Schema
 {

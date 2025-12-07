@@ -1,6 +1,19 @@
-@Evently.Api_HostAddress = http://localhost:5187
+@hostname = http://localhost:5001
 
-GET {{Evently.Api_HostAddress}}/weatherforecast/
+
+### Get Event
+GET {{hostname}}/events/7c05b322-ccdd-4387-b0c9-1614938d973c
 Accept: application/json
 
-###
+### Create Event
+POST {{hostname}}/events
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "AC/DC Live show",
+  "description": "AC/DC live concert",
+  "location": "Berlin, Germany",
+  "startsAtUtc": "2025-12-31T11:00:00Z"
+}
+

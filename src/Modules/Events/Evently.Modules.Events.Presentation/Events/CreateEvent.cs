@@ -1,10 +1,11 @@
-﻿using Evently.Modules.Events.Database;
+﻿using Evently.Modules.Events.Application.Events;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace Evently.Modules.Events.Events;
+namespace Evently.Modules.Events.Presentation.Events;
 
 internal static class CreateEvent
 {
@@ -13,25 +14,18 @@ internal static class CreateEvent
     {
         app.MapPost("events", async (
                 [FromBody] Request request,
-                [FromServices] EventsDbContext dbContext,
+                [FromServices] ISender sender,
                 CancellationToken token) =>
             {
-                var @event = new Event
-                {
-                    Id = Guid.NewGuid(),
-                    Title = request.Title,
-                    Description = request.Description,
-                    Location = request.Location,
-                    StartsAtUtc = request.StartsAtUtc,
-                    EndsAtUtc = request.EndsAtUtc,
-                    EventStatus = EventStatus.Draft
-                };
 
-                dbContext.Add(@event);
-
-                await dbContext.SaveChangesAsync(token);
-
-                return Results.Ok(@event.Id);
+                Guid response = await sender.Send(new CommandCreateEvent(
+                    request.Title,
+                    request.Description,
+                    request.Location,
+                    request.StartsAtUtc,
+                    request.EndsAtUtc), token);
+                
+                return Results.Ok(response);
             })
             .WithTags(Tags.Events);
     }
