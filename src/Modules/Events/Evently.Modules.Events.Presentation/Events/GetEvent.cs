@@ -1,4 +1,5 @@
 ﻿using Evently.Modules.Events.Application.Events;
+using Evently.Modules.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -13,8 +14,8 @@ internal static class GetEvent
     {
         app.MapGet("events/{id:guid}", async (Guid id, [FromServices] ISender sender) =>
             {
-                EventResponse? response = await sender.Send(new QueryGetEvent(id));
-                return response is null ? Results.NotFound(id) : Results.Ok(response);
+                Result<EventResponse> response = await sender.Send(new QueryGetEvent(id));
+                return response.Match(Results.Ok, ApiResults.ToProblemDetail);
             })
             .WithTags(Tags.Events);
     }

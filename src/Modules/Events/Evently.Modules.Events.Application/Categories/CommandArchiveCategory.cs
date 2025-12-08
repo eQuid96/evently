@@ -3,23 +3,23 @@ using Evently.Modules.SharedKernel;
 
 namespace Evently.Modules.Events.Application.Categories;
 
-public sealed record CommandArchiveCategory(Guid CategoryId) : ICommand<bool>;
+public sealed record CommandArchiveCategory(Guid CategoryId) : ICommand;
 
 
 internal sealed class CommandHandlerArchiveCategory(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork) 
-    : ICommandHandler<CommandArchiveCategory, bool>
+    : ICommandHandler<CommandArchiveCategory>
 {
-    public async Task<bool> Handle(CommandArchiveCategory request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CommandArchiveCategory request, CancellationToken cancellationToken)
     {
         Category? category = await categoryRepository.GetAsync(request.CategoryId, cancellationToken);
 
         if (category is null)
         {
-            return false;
+            return Result.Failure(CategoryErrors.NotFound(request.CategoryId));
         }
         
         category.Archive();
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        return true;
+        return Result.Ok();
     }
 }

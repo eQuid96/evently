@@ -1,15 +1,16 @@
 ﻿using System.Data.Common;
 using Dapper;
+using Evently.Modules.Events.Domain.Events;
 using Evently.Modules.SharedKernel;
 
 namespace Evently.Modules.Events.Application.Events;
 
-public sealed record QueryGetEvent(Guid EventId) : IQuery<EventResponse?>;
+public sealed record QueryGetEvent(Guid EventId) : IQuery<EventResponse>;
 
 
-internal sealed class QueryHandlerGetEvent(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<QueryGetEvent, EventResponse?>
+internal sealed class QueryHandlerGetEvent(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<QueryGetEvent, EventResponse>
 {
-    public async Task<EventResponse?> Handle(QueryGetEvent request, CancellationToken cancellationToken)
+    public async Task<Result<EventResponse>> Handle(QueryGetEvent request, CancellationToken cancellationToken)
     {
         await using DbConnection db = await dbConnectionFactory.OpenConnectionAsync();
 
@@ -29,6 +30,12 @@ internal sealed class QueryHandlerGetEvent(IDbConnectionFactory dbConnectionFact
                              """;
 
         EventResponse? eventResponse = await db.QuerySingleOrDefaultAsync<EventResponse>(query, request);
+
+        if (eventResponse is null)
+        {
+            return Result<EventResponse>.Failure(EventsErrors.NotFound(request.EventId));
+        }
+        
         return eventResponse;
     }
 }

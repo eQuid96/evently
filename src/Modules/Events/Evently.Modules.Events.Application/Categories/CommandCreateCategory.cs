@@ -9,7 +9,7 @@ public sealed record CommandCreateCategory(string Name) : ICommand<Guid>;
 internal sealed class CommandHandlerCreateCategory(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork) 
     : ICommandHandler<CommandCreateCategory, Guid>
 {
-    public async Task<Guid> Handle(CommandCreateCategory request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CommandCreateCategory request, CancellationToken cancellationToken)
     {
         var newCategory = Category.Create(request.Name);
         categoryRepository.Insert(newCategory);

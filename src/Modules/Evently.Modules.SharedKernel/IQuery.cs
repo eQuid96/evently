@@ -2,6 +2,6 @@
 
 namespace Evently.Modules.SharedKernel;
 
-public interface IQuery<out TResponse> : IRequest<TResponse>;
+public interface IQuery<TResponse> : IRequest<Result<TResponse>>;
 
 

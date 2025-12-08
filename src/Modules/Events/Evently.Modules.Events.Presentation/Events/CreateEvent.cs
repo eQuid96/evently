@@ -1,4 +1,5 @@
 ﻿using Evently.Modules.Events.Application.Events;
+using Evently.Modules.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -18,15 +19,16 @@ internal static class CreateEvent
                 CancellationToken token) =>
             {
 
-                Guid response = await sender.Send(new CommandCreateEvent(
+                Result<Guid> response = await sender.Send(new CommandCreateEvent(
                     request.Title,
                     request.Description,
                     request.Location,
                     request.StartsAtUtc,
                     request.CategoryId,
                     request.EndsAtUtc), token);
-                
-                return Results.Ok(response);
+
+
+                return response.Match(Results.Ok, ApiResults.ToProblemDetail);
             })
             .WithTags(Tags.Events);
     }

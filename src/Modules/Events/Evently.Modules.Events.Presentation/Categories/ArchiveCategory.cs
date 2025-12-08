@@ -1,4 +1,5 @@
 ﻿using Evently.Modules.Events.Application.Categories;
+using Evently.Modules.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -16,8 +17,9 @@ internal static class ArchiveCategory
             [FromServices] ISender sender,
             CancellationToken cancellationToken) =>
         {
-            bool archived = await sender.Send(new CommandArchiveCategory(id), cancellationToken);
-            return !archived ? Results.NotFound() : Results.Ok();
+            Result result = await sender.Send(new CommandArchiveCategory(id), cancellationToken);
+            
+            return result.Match(() => Results.Ok(), ApiResults.ToProblemDetail);
         }).WithTags(Tags.Categories);
     }
 }

@@ -15,25 +15,28 @@ internal sealed class HandlerCreateEventCommand(
     IUnitOfWork unitOfWork,
     IDateTimeProvider dateTimeProvider) : ICommandHandler<CommandCreateEvent, Guid>
 {
-    public async Task<Guid> Handle(CommandCreateEvent request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CommandCreateEvent request, CancellationToken cancellationToken)
     {
         if (request.StartsAtUtc < dateTimeProvider.UtcNow)
         {
-            throw new InvalidOperationException(EventsErrors.StartDateInPast);
+            return Result<Guid>.Failure(EventsErrors.StartDateInPast);
         }
         
-        var @event = Event.Create(
+        Result<Event> @event = Event.Create(
             request.Title,
             request.Description,
             request.Location,
             request.StartsAtUtc,
             request.CategoryId,
             request.EndsAtUtc);
-        
-        eventRepository.Insert(@event);
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        if (@event.IsFailure)
+        {
+            return Result<Guid>.Failure(@event.GetErrors());
+        }
         
-        return @event.Id;
+        eventRepository.Insert(@event.Value);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return @event.Value.Id;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Evently.Modules.Events.Application.Categories;
+using Evently.Modules.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -21,8 +22,10 @@ internal static class CreateCategory
             [FromServices] ISender sender,
             CancellationToken cancellationToken) =>
         {
-            Guid response = await sender.Send(new CommandCreateCategory(request.Name), cancellationToken);
-            return Results.Ok(response);
+            Result<Guid> result = await sender.Send(new CommandCreateCategory(request.Name), cancellationToken);
+            
+            return result.Match(Results.Ok, ApiResults.ToProblemDetail);
+            
         }).WithTags(Tags.Categories);
     }
 }

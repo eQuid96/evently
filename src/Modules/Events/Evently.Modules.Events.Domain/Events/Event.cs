@@ -17,7 +17,7 @@ public sealed class Event : Entity
     public DateTime? EndsAtUtc { get; private set; }
     public EventStatus EventStatus { get; private set; }
     public Guid CategoryId { get; private set; }
-    public static Event Create(
+    public static Result<Event> Create(
         string title,
         string description,
         string location,
@@ -27,7 +27,7 @@ public sealed class Event : Entity
     {
         if (endsAtUtc.HasValue && endsAtUtc < startAtsUtc)
         {
-            throw new InvalidOperationException(EventsErrors.EndDateBeforeStartDate);
+            return Result<Event>.Failure(EventsErrors.EndDateBeforeStartDate);
         }
         
         var @event = new Event
