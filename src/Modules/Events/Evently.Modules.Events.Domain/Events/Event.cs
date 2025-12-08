@@ -1,6 +1,8 @@
-﻿namespace Evently.Modules.Events.Domain.Events;
+﻿using Evently.Modules.SharedKernel;
 
-public sealed class Event
+namespace Evently.Modules.Events.Domain.Events;
+
+public sealed class Event : Entity
 {
     private Event()
     {
@@ -14,12 +16,13 @@ public sealed class Event
     public DateTime StartsAtUtc { get; private set; }
     public DateTime? EndsAtUtc { get; private set; }
     public EventStatus EventStatus { get; private set; }
-    
+    public Guid CategoryId { get; private set; }
     public static Event Create(
         string title,
         string description,
         string location,
         DateTime startAtsUtc,
+        Guid categoryId,
         DateTime? endsAtUtc)
     {
         if (endsAtUtc.HasValue && endsAtUtc < startAtsUtc)
@@ -35,9 +38,12 @@ public sealed class Event
             Description = description,
             StartsAtUtc = startAtsUtc,
             EndsAtUtc = endsAtUtc,
-            EventStatus = EventStatus.Draft
+            EventStatus = EventStatus.Draft,
+            CategoryId = categoryId
         };
-
+        
+        @event.RaiseEvent(new EventCreatedDomainEvent(@event.Id));
+        
         return @event;
     }
 }

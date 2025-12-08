@@ -1,8 +1,21 @@
 @hostname = http://localhost:5001
 
 
+### Create Category
+POST {{hostname}}/categories
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Live Concerts"
+}
+
+### Archive Category
+PUT {{hostname}}/categories/4218e7c2-e064-49c9-a7d5-2aa3f7f2d589/archive
+Accept: application/json
+
 ### Get Event
-GET {{hostname}}/events/7c05b322-ccdd-4387-b0c9-1614938d973c
+GET {{hostname}}/events/6ea3f433-b17b-452c-addf-994f9fa7f5e7
 Accept: application/json
 
 ### Create Event
@@ -14,6 +27,7 @@ Content-Type: application/json
   "title": "AC/DC Live show",
   "description": "AC/DC live concert",
   "location": "Berlin, Germany",
-  "startsAtUtc": "2025-12-31T11:00:00Z"
+  "startsAtUtc": "2025-12-31T11:00:00Z",
+  "categoryId": "4218e7c2-e064-49c9-a7d5-2aa3f7f2d589"
 }
 

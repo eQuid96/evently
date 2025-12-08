@@ -7,6 +7,7 @@ public sealed record CommandCreateEvent(
     string Description,
     string Location,
     DateTime StartsAtUtc,
+    Guid CategoryId,
     DateTime? EndsAtUtc) : ICommand<Guid>;
 
 internal sealed class HandlerCreateEventCommand(
@@ -26,6 +27,7 @@ internal sealed class HandlerCreateEventCommand(
             request.Description,
             request.Location,
             request.StartsAtUtc,
+            request.CategoryId,
             request.EndsAtUtc);
         
         eventRepository.Insert(@event);

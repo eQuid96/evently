@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
     <ItemGroup>
         <PackageReference Include="EFCore.NamingConventions" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
@@ -8,6 +8,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Evently.Modules.Events.Application\Evently.Modules.Events.Application.csproj" />
     <ProjectReference Include="..\Evently.Modules.Events.Presentation\Evently.Modules.Events.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\Migrations\" />
   </ItemGroup>
 
 </Project>

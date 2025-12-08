@@ -20,8 +20,11 @@ internal sealed class QueryHandlerGetEvent(IDbConnectionFactory dbConnectionFact
                                     e.description AS    {nameof(EventResponse.Description)},
                                     e.location AS       {nameof(EventResponse.Location)},
                                     e.starts_at_utc AS  {nameof(EventResponse.StartsAt)},
+                                    e.category_id AS    {nameof(EventResponse.CategoryId)},
+                                    categories.name AS  {nameof(EventResponse.Category)},
                                     e.ends_at_utc AS    {nameof(EventResponse.EndsAt)}
                                 FROM events.events AS e
+                                INNER JOIN events.categories as categories on categories.id = e.category_id
                                 WHERE e.id = @EventId
                              """;
 

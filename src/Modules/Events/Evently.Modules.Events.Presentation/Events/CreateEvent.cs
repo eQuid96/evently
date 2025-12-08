@@ -23,6 +23,7 @@ internal static class CreateEvent
                     request.Description,
                     request.Location,
                     request.StartsAtUtc,
+                    request.CategoryId,
                     request.EndsAtUtc), token);
                 
                 return Results.Ok(response);
@@ -36,6 +37,7 @@ internal static class CreateEvent
         public string Description { get; set; }
         public string Location { get; set; }
         public DateTime StartsAtUtc { get; set; }
+        public Guid CategoryId { get; set; }
         public DateTime? EndsAtUtc { get; set; }
     }
 }

@@ -6,4 +6,6 @@ public sealed record EventResponse(
     string Description,
     string Location,
     DateTime StartsAt,
+    Guid CategoryId,
+    string Category,
     DateTime? EndsAt);

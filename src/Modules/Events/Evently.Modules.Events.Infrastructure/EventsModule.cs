@@ -1,6 +1,10 @@
-﻿using Evently.Modules.Events.Domain.Events;
+﻿using Evently.Modules.Events.Domain.Categories;
+using Evently.Modules.Events.Domain.Events;
+using Evently.Modules.Events.Infrastructure.Categories;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
+using Evently.Modules.Events.Presentation;
+using Evently.Modules.Events.Presentation.Categories;
 using Evently.Modules.Events.Presentation.Events;
 using Evently.Modules.SharedKernel;
 using Microsoft.AspNetCore.Routing;
@@ -18,6 +22,7 @@ public static class EventsModule
     public static void MapEndPoints(IEndpointRouteBuilder app)
     {
         EventEndpoints.MapEndpoints(app);
+        CategoryEndpoints.MapEndPoints(app);
     }
 
     public static IServiceCollection AddEventsModule(this IServiceCollection services, IConfiguration configuration)
@@ -30,6 +35,7 @@ public static class EventsModule
         
         services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
         return services;
     }
     
