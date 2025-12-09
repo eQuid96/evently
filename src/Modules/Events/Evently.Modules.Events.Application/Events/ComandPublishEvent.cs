@@ -1,0 +1,31 @@
+﻿using Evently.Modules.Events.Domain.Events;
+using Evently.Modules.SharedKernel;
+
+namespace Evently.Modules.Events.Application.Events;
+
+public sealed record CommandPublishEvent(Guid EventId) : ICommand;
+
+
+internal sealed class CommandHandlerPublishEvent(IEventRepository eventRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<CommandPublishEvent>
+{
+    public async Task<Result> Handle(CommandPublishEvent request, CancellationToken cancellationToken)
+    {
+        Event? @event = await eventRepository.GetAsync(request.EventId, cancellationToken);
+
+        if (@event is null)
+        {
+            return Result.Failure(EventErrors.NotFound(request.EventId));
+        }
+
+        Result result = @event.Publish();
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return result;
+    }
+}

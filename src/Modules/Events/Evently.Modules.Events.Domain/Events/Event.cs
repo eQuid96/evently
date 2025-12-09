@@ -17,6 +17,7 @@ public sealed class Event : Entity
     public DateTime? EndsAtUtc { get; private set; }
     public EventStatus EventStatus { get; private set; }
     public Guid CategoryId { get; private set; }
+    
     public static Result<Event> Create(
         string title,
         string description,
@@ -27,7 +28,7 @@ public sealed class Event : Entity
     {
         if (endsAtUtc.HasValue && endsAtUtc < startAtsUtc)
         {
-            return Result<Event>.Failure(EventsErrors.EndDateBeforeStartDate);
+            return Result<Event>.Failure(EventErrors.EndDateBeforeStartDate);
         }
         
         var @event = new Event
@@ -45,5 +46,17 @@ public sealed class Event : Entity
         @event.RaiseEvent(new EventCreatedDomainEvent(@event.Id));
         
         return @event;
+    }
+
+    public Result Publish()
+    {
+        if (EventStatus != EventStatus.Draft)
+        {
+            return Result.Failure(EventErrors.NotDraft);
+        }
+
+        EventStatus = EventStatus.Published;
+        RaiseEvent(new EventPublishedDomainEvent(Id));
+        return Result.Ok();
     }
 }

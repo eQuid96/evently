@@ -19,7 +19,7 @@ internal sealed class HandlerCreateEventCommand(
     {
         if (request.StartsAtUtc < dateTimeProvider.UtcNow)
         {
-            return Result<Guid>.Failure(EventsErrors.StartDateInPast);
+            return Result<Guid>.Failure(EventErrors.StartDateInPast);
         }
         
         Result<Event> @event = Event.Create(

@@ -8,24 +8,19 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Evently.Modules.Events.Presentation.Categories;
 
-internal static class CreateCategory
+internal static class GetCategory
 {
-    internal sealed class Request
-    {
-        public string Name { get; init; }
-    }
-    
+
     internal static void MapEndPoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("categories", async (
-            [FromBody] Request request,
+        app.MapGet("categories/{id:guid}", async (
+            Guid id,
             [FromServices] ISender sender,
-            CancellationToken cancellationToken) =>
+            CancellationToken token) =>
         {
-            Result<Guid> result = await sender.Send(new CommandCreateCategory(request.Name), cancellationToken);
-            
+            Result<CategoryResponse> result = await sender.Send(new QueryGetCategory(id), token);
+
             return result.Match(Results.Ok, ApiResults.ToProblemDetail);
-            
         }).WithTags(Tags.Categories);
     }
 }

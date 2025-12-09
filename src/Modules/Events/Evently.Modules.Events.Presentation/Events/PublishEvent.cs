@@ -1,4 +1,4 @@
-﻿using Evently.Modules.Events.Application.Categories;
+﻿using Evently.Modules.Events.Application.Events;
 using Evently.Modules.SharedKernel;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -6,20 +6,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
-namespace Evently.Modules.Events.Presentation.Categories;
+namespace Evently.Modules.Events.Presentation.Events;
 
-internal static class ArchiveCategory
+internal static class PublishEvent
 {
     internal static void MapEndPoints(IEndpointRouteBuilder app)
     {
-        app.MapPut("categories/{id:guid}/archive", async(
+        app.MapPut("events/{id:guid}/publish", async (
             Guid id,
             [FromServices] ISender sender,
-            CancellationToken cancellationToken) =>
+            CancellationToken token) =>
         {
-            Result result = await sender.Send(new CommandArchiveCategory(id), cancellationToken);
-            
+            Result result = await sender.Send(new CommandPublishEvent(id), token);
             return result.Match(() => Results.Ok(), ApiResults.ToProblemDetail);
-        }).WithTags(Tags.Categories);
+        }).WithTags(Tags.Events);
     }
 }

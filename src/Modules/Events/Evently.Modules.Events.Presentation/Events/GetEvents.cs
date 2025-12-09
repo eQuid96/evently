@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Evently.Modules.Events.Presentation.Events;
 
-internal static class GetEvent
+internal static class GetEvents
 {
     internal static void MapEndPoints(IEndpointRouteBuilder app)
     {
-        app.MapGet("events/{id:guid}", async (Guid id, [FromServices] ISender sender, CancellationToken token) =>
+        app.MapGet("events", async ([FromServices] ISender sender, CancellationToken token) =>
             {
-                Result<EventResponse> response = await sender.Send(new QueryGetEvent(id), token);
+                Result<IReadOnlyCollection<EventResponse>> response = await sender.Send(new QueryGetEvents(), token);
                 return response.Match(Results.Ok, ApiResults.ToProblemDetail);
             })
             .WithTags(Tags.Events);

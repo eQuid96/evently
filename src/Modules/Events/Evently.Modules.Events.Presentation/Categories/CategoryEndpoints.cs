@@ -9,5 +9,7 @@ public static class CategoryEndpoints
     {
         CreateCategory.MapEndPoints(app);
         ArchiveCategory.MapEndPoints(app);
+        GetCategories.MapEndPoints(app);
+        GetCategory.MapEndPoints(app);
     }
 }
