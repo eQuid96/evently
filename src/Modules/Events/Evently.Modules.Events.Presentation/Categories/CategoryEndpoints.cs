@@ -11,5 +11,6 @@ public static class CategoryEndpoints
         ArchiveCategory.MapEndPoints(app);
         GetCategories.MapEndPoints(app);
         GetCategory.MapEndPoints(app);
+        UpdateCategory.MapEndPoints(app);
     }
 }

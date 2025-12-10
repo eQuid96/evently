@@ -10,5 +10,6 @@ public static class EventEndpoints
         GetEvent.MapEndPoints(app);
         GetEvents.MapEndPoints(app);
         PublishEvent.MapEndPoints(app);
+        CancelEvent.MapEndPoints(app);
     }
 }

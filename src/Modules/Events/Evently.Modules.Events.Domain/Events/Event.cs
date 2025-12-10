@@ -1,5 +1,4 @@
 ﻿using Evently.Modules.SharedKernel;
-
 namespace Evently.Modules.Events.Domain.Events;
 
 public sealed class Event : Entity
@@ -57,6 +56,28 @@ public sealed class Event : Entity
 
         EventStatus = EventStatus.Published;
         RaiseEvent(new EventPublishedDomainEvent(Id));
+        return Result.Ok();
+    }
+
+    public Result Cancel(DateTime utcNow)
+    {
+        if (EventStatus == EventStatus.Canceled)
+        {
+            return Result.Failure(EventErrors.AlreadyCanceled);
+        }
+        if (EventStatus == EventStatus.Completed)
+        {
+            return Result.Failure(EventErrors.CancelCompletedEvent);
+        }
+        
+        if (StartsAtUtc < utcNow)
+        {
+            return Result.Failure(EventErrors.CancelStartedEvent);
+        }
+
+        EventStatus = EventStatus.Canceled;
+
+        RaiseEvent(new EventCanceledDomainEvent(Id));
         return Result.Ok();
     }
 }
