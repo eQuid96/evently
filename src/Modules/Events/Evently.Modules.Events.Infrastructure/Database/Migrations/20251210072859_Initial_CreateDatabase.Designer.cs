@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Modules.Events.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(EventsDbContext))]
-    [Migration("20251208154511_Inital_CreateDatabase")]
-    partial class Inital_CreateDatabase
+    [Migration("20251210072859_Initial_CreateDatabase")]
+    partial class Initial_CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,44 @@ namespace Evently.Modules.Events.Infrastructure.Database.Migrations
                     b.ToTable("events", "events");
                 });
 
+            modelBuilder.Entity("Evently.Modules.Events.Domain.TicketType.TicketType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("currency");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("event_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id")
+                        .HasName("pk_ticket_types");
+
+                    b.HasIndex("EventId")
+                        .HasDatabaseName("ix_ticket_types_event_id");
+
+                    b.ToTable("ticket_types", "events");
+                });
+
             modelBuilder.Entity("Evently.Modules.Events.Domain.Events.Event", b =>
                 {
                     b.HasOne("Evently.Modules.Events.Domain.Categories.Category", null)
@@ -103,6 +141,16 @@ namespace Evently.Modules.Events.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_events_categories_category_id");
+                });
+
+            modelBuilder.Entity("Evently.Modules.Events.Domain.TicketType.TicketType", b =>
+                {
+                    b.HasOne("Evently.Modules.Events.Domain.Events.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_ticket_types_events_event_id");
                 });
 #pragma warning restore 612, 618
         }
