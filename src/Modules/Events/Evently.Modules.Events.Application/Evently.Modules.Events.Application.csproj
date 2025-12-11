@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
   <ItemGroup>
-    <ProjectReference Include="..\..\Evently.Modules.SharedKernel\Evently.Modules.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Evently.Shared.Application\Evently.Shared.Application.csproj" />
     <ProjectReference Include="..\Evently.Modules.Events.Domain\Evently.Modules.Events.Domain.csproj" />
   </ItemGroup>
     

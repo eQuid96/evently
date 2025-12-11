@@ -1,4 +1,4 @@
-﻿namespace Evently.Modules.SharedKernel;
+﻿namespace Evently.Shared.Application.Data;
 
 public interface IUnitOfWork
 {

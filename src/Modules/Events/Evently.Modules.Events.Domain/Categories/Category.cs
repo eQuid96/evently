@@ -1,4 +1,6 @@
-﻿using Evently.Modules.SharedKernel;
+﻿
+
+using Evently.Shared.Domain;
 
 namespace Evently.Modules.Events.Domain.Categories;
 

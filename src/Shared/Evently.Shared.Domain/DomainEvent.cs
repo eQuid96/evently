@@ -1,4 +1,4 @@
-﻿namespace Evently.Modules.SharedKernel;
+﻿namespace Evently.Shared.Domain;
 
 public abstract class DomainEvent : IDomainEvent
 {

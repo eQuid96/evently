@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Evently.Modules.SharedKernel;
+namespace Evently.Shared.Application.Data;
 
 public interface IDbConnectionFactory
 {

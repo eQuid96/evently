@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="EFCore.NamingConventions" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Evently.Shared.Application\Evently.Shared.Application.csproj" />
+  </ItemGroup>
+</Project>

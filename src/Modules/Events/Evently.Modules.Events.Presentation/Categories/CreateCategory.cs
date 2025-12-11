@@ -1,5 +1,6 @@
 ﻿using Evently.Modules.Events.Application.Categories;
-using Evently.Modules.SharedKernel;
+using Evently.Shared.Domain;
+using Evently.Shared.Presentation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -8,14 +9,14 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Evently.Modules.Events.Presentation.Categories;
 
-internal static class CreateCategory
+internal sealed class CreateCategory : IEndPoint
 {
     internal sealed class Request
     {
         public string Name { get; init; }
     }
     
-    internal static void MapEndPoints(IEndpointRouteBuilder app)
+    public void MapEndPoints(IEndpointRouteBuilder app)
     {
         app.MapPost("categories", async (
             [FromBody] Request request,

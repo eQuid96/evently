@@ -1,7 +1,7 @@
-﻿using Evently.Modules.SharedKernel;
+﻿using Evently.Shared.Domain;
 using Microsoft.AspNetCore.Http;
 
-namespace Evently.Modules.Events.Presentation;
+namespace Evently.Shared.Presentation;
 
 public static class ApiResults
 {

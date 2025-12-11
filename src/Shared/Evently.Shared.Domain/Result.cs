@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Modules.SharedKernel;
+namespace Evently.Shared.Domain;
 
 public class Result
 {

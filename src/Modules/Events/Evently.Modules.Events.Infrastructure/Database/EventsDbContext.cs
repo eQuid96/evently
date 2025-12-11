@@ -3,7 +3,7 @@ using Evently.Modules.Events.Domain.Events;
 using Evently.Modules.Events.Domain.TicketType;
 using Evently.Modules.Events.Infrastructure.Events;
 using Evently.Modules.Events.Infrastructure.TicketTypes;
-using Evently.Modules.SharedKernel;
+using Evently.Shared.Application.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Evently.Modules.Events.Infrastructure.Database;

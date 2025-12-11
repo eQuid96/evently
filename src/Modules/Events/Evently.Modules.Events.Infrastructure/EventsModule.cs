@@ -3,49 +3,21 @@ using Evently.Modules.Events.Domain.Events;
 using Evently.Modules.Events.Infrastructure.Categories;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
-using Evently.Modules.Events.Presentation;
-using Evently.Modules.Events.Presentation.Categories;
-using Evently.Modules.Events.Presentation.Events;
-using Evently.Modules.SharedKernel;
-using Microsoft.AspNetCore.Routing;
+using Evently.Shared.Application.Data;
+using Evently.Shared.Presentation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Npgsql;
 
 namespace Evently.Modules.Events.Infrastructure;
 
 public static class EventsModule
 {
-    public static void MapEndPoints(IEndpointRouteBuilder app)
-    {
-        EventEndpoints.MapEndpoints(app);
-        CategoryEndpoints.MapEndPoints(app);
-    }
 
     public static IServiceCollection AddEventsModule(this IServiceCollection services, IConfiguration configuration)
     {
-        //MediatR
-        services.AddMediatR(config =>
-            config.RegisterServicesFromAssembly(Application.AssemblyReference.Assembly));
-        
-        services.AddDatabase(configuration);
-        
-        services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddScoped<IEventRepository, EventRepository>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-        return services;
-    }
-    
-    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
-    {
         string dbConnectionString = configuration.GetConnectionString("EventsDatabase");
-
-        NpgsqlDataSource npgsqlDataSource = new NpgsqlDataSourceBuilder(dbConnectionString).Build();
-        services.TryAddSingleton(npgsqlDataSource);
-        services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         
         services.AddDbContext<EventsDbContext>(options => 
             options.UseNpgsql(dbConnectionString,
@@ -54,5 +26,11 @@ public static class EventsModule
                 .UseSnakeCaseNamingConvention()
         );
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EventsDbContext>());
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        
+        //Register all EndPoints to DI
+        services.AddEndPoints(Presentation.AssemblyReference.Assembly);
+        return services;
     }
 }

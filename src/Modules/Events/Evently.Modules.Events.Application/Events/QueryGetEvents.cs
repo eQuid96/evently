@@ -1,6 +1,8 @@
 ﻿using System.Data.Common;
 using Dapper;
-using Evently.Modules.SharedKernel;
+using Evently.Shared.Application.Communication;
+using Evently.Shared.Application.Data;
+using Evently.Shared.Domain;
 
 namespace Evently.Modules.Events.Application.Events;
 

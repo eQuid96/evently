@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Evently.Shared.Domain;
+using MediatR;
 
-namespace Evently.Modules.SharedKernel;
+namespace Evently.Shared.Application.Communication;
 
 
 public interface ICommandHandler<in TCommand, TResponse> : IRequestHandler<TCommand, Result<TResponse>>

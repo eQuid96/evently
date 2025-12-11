@@ -1,4 +1,4 @@
-﻿namespace Evently.Modules.SharedKernel;
+﻿namespace Evently.Shared.Application.Time;
 
 public interface IDateTimeProvider
 {

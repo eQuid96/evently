@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Evently.Shared.Domain;
+using MediatR;
 
-namespace Evently.Modules.SharedKernel;
+namespace Evently.Shared.Application.Communication;
 
 public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, Result<TResponse>>
     where TQuery : IQuery<TResponse>;

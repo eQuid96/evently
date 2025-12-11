@@ -1,6 +1,6 @@
-﻿using Evently.Modules.SharedKernel;
+﻿using Evently.Shared.Application.Time;
 
-namespace Evently.Modules.Events.Infrastructure;
+namespace Evently.Shared.Infrastructure;
 
 internal sealed class DateTimeProvider : IDateTimeProvider
 {
