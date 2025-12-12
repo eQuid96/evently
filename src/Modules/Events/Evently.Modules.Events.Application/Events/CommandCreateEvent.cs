@@ -24,7 +24,7 @@ internal sealed class HandlerCreateEventCommand(
     {
         if (request.StartsAtUtc < dateTimeProvider.UtcNow)
         {
-            return Result<Guid>.Failure(EventErrors.StartDateInPast);
+            return Result.Failure<Guid>(EventErrors.StartDateInPast);
         }
         
         Result<Event> @event = Event.Create(
@@ -37,7 +37,7 @@ internal sealed class HandlerCreateEventCommand(
 
         if (@event.IsFailure)
         {
-            return Result<Guid>.Failure(@event.GetErrors());
+            return Result.Failure<Guid>(@event.Error);
         }
         
         eventRepository.Insert(@event.Value);

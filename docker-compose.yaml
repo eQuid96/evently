@@ -27,4 +27,12 @@
       - ./postgres-data/:/var/lib/postgresql/
     ports:
        - "54320:5432"
-
+  
+  evently.seq:
+    image: datalust/seq:2025.2
+    environment:
+      - ACCEPT_EULA=y
+      - SEQ_FIRSTRUN_NOAUTHENTICATION=True
+    ports:
+      - "5341:5341"
+      - "8081:80"

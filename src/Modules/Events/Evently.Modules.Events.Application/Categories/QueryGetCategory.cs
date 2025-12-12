@@ -30,7 +30,7 @@ internal sealed class QueryHandlerGetCategory(IDbConnectionFactory connectionFac
 
         if (category is null)
         {
-            return Result<CategoryResponse>.Failure(CategoryErrors.NotFound(request.CategoryId));
+            return Result.Failure<CategoryResponse>(CategoryErrors.NotFound(request.CategoryId));
         }
         return category;
     }

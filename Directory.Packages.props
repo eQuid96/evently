@@ -8,6 +8,11 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
   </ItemGroup>
+  <ItemGroup Label="Logging">
+      <PackageVersion Include="Serilog" Version="4.3.0" />
+      <PackageVersion Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Seq" Version="9.0.0" />
+  </ItemGroup>
   <ItemGroup Label="Code Anbalysis">
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.16.1.129956" />
   </ItemGroup>

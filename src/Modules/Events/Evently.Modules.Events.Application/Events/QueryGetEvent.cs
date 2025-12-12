@@ -35,7 +35,7 @@ internal sealed class QueryHandlerGetEvent(IDbConnectionFactory dbConnectionFact
 
         if (eventResponse is null)
         {
-            return Result<EventResponse>.Failure(EventErrors.NotFound(request.EventId));
+            return Result.Failure<EventResponse>(EventErrors.NotFound(request.EventId));
         }
         
         return eventResponse;

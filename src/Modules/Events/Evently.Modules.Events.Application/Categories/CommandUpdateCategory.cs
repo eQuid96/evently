@@ -16,7 +16,7 @@ internal sealed class CommandHandlerUpdateCategory(ICategoryRepository categoryR
         Category? category = await categoryRepository.GetAsync(request.CategoryId, cancellationToken);
         if (category is null)
         {
-            return Result<CategoryResponse>.Failure(CategoryErrors.NotFound(request.CategoryId));
+            return Result.Failure<CategoryResponse>(CategoryErrors.NotFound(request.CategoryId));
         }
         
         category.ChangeName(request.Name);

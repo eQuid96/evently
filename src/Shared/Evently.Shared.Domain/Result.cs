@@ -1,23 +1,26 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Evently.Shared.Domain;
+﻿namespace Evently.Shared.Domain;
 
 public class Result
 {
-    public bool IsSuccess { get; }
     public Error Error { get; }
+    public bool IsSuccess { get; }
 
     public bool IsFailure => !IsSuccess;
 
-    public Result(bool isSuccess, Error error)
+    protected Result(bool isSuccess, Error error)
     {
+        if (isSuccess && error != Error.None ||
+            !isSuccess && error == Error.None)
+        {
+            throw new ArgumentException("Error creating a result object with the error", nameof(error));
+        }
         IsSuccess = isSuccess;
         Error = error;
     }
 
     public static Result Failure(Error error) => new(false, error);
+    public static Result<TValue> Failure<TValue>(Error error) => new(false, error, default);
     public static Result Ok() => new(true, Error.None);
-
     public TOut Match<TOut>(Func<TOut> onSuccess, Func<Result, TOut> onError)
     {
         return IsFailure ? onError(this) : onSuccess();
@@ -25,79 +28,60 @@ public class Result
 }
 
 
-public sealed class Result<T>
+public class Result<T> : Result
 {
     private readonly T? _value;
-    private readonly Error[]? _errors;
-
-    [MemberNotNullWhen(true, nameof(_value))]
-    [MemberNotNullWhen(false, nameof(_errors))]
-    public bool IsSuccess { get; }
-
-    public bool IsFailure => !IsSuccess;
-
-    private Result(T value)
+    public Result(bool isSuccess, Error error, T? value) : base(isSuccess, error)
     {
         _value = value;
-        _errors = null;
-        IsSuccess = true;
     }
-    
-    private Result(Error[] errors)
-    {
-        _value = default;
-        _errors = errors;
-        IsSuccess = false;
-    }
-    
+
     public T Value => IsSuccess 
         ? _value 
         : throw new InvalidOperationException("Trying to get a value a not successful result.");
     
     
-    public static Result<T> Ok(T value) => new (value);
-    public static Result<T> Failure(Error[] errors) => new(errors);
-    public static Result<T> Failure(Error error) => new ([error]);
+    public static Result<T> Ok(T value) => new (true, Error.None, value);
     
     public static implicit operator Result<T>(T? value) => 
-        value is not null ? Ok(value) : Failure(Error.NullValue);
+        value is not null ? Ok(value) : Failure<T>(Error.NullValue);
 
-    public void Match(Action<T> onSuccess, Action<Error[]> onError)
+    public void Match(Action<T> onSuccess, Action<Error> onError)
     {
         if (IsSuccess)
         {
-            onSuccess(_value);
+            onSuccess(Value);
             return;
         }
-        onError(_errors);
+        onError(Error);
     }
     
-    public Result<TResult> Switch<TResult>(Func<T, TResult> onSuccess, Func<Error[], Error[]> onError)
+    public Result<TResult> Switch<TResult>(Func<T, TResult> onSuccess, Func<Error, Error> onError)
     {
         if (IsSuccess)
         {
-            return Result<TResult>.Ok(onSuccess(_value));
+            return Result<TResult>.Ok(onSuccess(Value));
         }
-        return Result<TResult>.Failure(onError(_errors));
+        return Failure<TResult>(onError(Error));
     }
 
     public Result<TResult> Map<TResult>(Func<T, TResult> projection)
     {
         if (!IsSuccess)
         {
-            return Result<TResult>.Failure(_errors);
+            return Failure<TResult>(Error);
         }
-        return Result<TResult>.Ok(projection(_value));
+        return Result<TResult>.Ok(projection(Value));
     }
     
     public Result<TResult> Bind<TResult>(Func<T, Result<TResult>> projection)
     {
         if (!IsSuccess)
         {
-            return Result<TResult>.Failure(_errors);
+            return Failure<TResult>(Error);
         }
 
-        return projection(_value);
+        return projection(Value);
     }
     public T Unwrap()
     {
@@ -105,28 +89,15 @@ public sealed class Result<T>
         {
             throw new InvalidOperationException("Trying to get a value a not successful result.");
         }
-
         return _value;
     }
     
-    public Error[] GetErrors()
-    {
-        if (IsSuccess)
-        {
-            throw new InvalidOperationException("Trying to get error from successful result.");
-        }
-
-        return _errors;
-    }
-
     public TOut Match<TOut>(Func<T, TOut> onSuccess, Func<Result<T>, TOut> onError)
     {
         if (IsFailure)
         {
             return onError(this);
         }
-        
         return onSuccess(Value);
-
     }
 }

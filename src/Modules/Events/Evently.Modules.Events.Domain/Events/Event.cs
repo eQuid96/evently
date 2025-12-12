@@ -27,7 +27,7 @@ public sealed class Event : Entity
     {
         if (endsAtUtc.HasValue && endsAtUtc < startAtsUtc)
         {
-            return Result<Event>.Failure(EventErrors.EndDateBeforeStartDate);
+            return Result.Failure<Event>(EventErrors.EndDateBeforeStartDate);
         }
         
         var @event = new Event

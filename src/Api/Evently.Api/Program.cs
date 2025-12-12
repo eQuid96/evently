@@ -3,8 +3,11 @@ using Evently.Modules.Events.Infrastructure;
 using Evently.Shared.Application;
 using Evently.Shared.Infrastructure;
 using Evently.Shared.Presentation;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, logger) => logger.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger => 
@@ -31,6 +34,7 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
+app.UseSerilogRequestLogging();
 app.MapEndPoints();
 
 await app.RunAsync();
