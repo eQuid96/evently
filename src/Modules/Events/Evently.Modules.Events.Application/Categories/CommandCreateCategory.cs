@@ -2,10 +2,19 @@
 using Evently.Shared.Application.Communication;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Domain;
+using FluentValidation;
 
 namespace Evently.Modules.Events.Application.Categories;
 
 public sealed record CommandCreateCategory(string Name) : ICommand<Guid>;
+
+internal sealed class ValidatorCommandCreateCategory : AbstractValidator<CommandCreateCategory>
+{
+    public ValidatorCommandCreateCategory()
+    {
+        RuleFor(c => c.Name).NotEmpty();
+    }
+}
 
 
 internal sealed class CommandHandlerCreateCategory(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork) 

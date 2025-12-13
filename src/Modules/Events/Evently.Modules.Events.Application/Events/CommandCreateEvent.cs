@@ -3,7 +3,7 @@ using Evently.Shared.Application.Communication;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Application.Time;
 using Evently.Shared.Domain;
-
+using FluentValidation;
 
 namespace Evently.Modules.Events.Application.Events;
 
@@ -14,6 +14,32 @@ public sealed record CommandCreateEvent(
     DateTime StartsAtUtc,
     Guid CategoryId,
     DateTime? EndsAtUtc) : ICommand<Guid>;
+
+
+internal sealed class ValidatorCommandCreateEvent : AbstractValidator<CommandCreateEvent>
+{
+    public ValidatorCommandCreateEvent()
+    {
+        RuleFor(r => r.Title)
+            .NotEmpty()
+            .MaximumLength(100);
+        
+        RuleFor(r => r.Description)
+            .NotEmpty()
+            .MaximumLength(500);
+        
+        RuleFor(r => r.Location)
+            .NotEmpty()
+            .MaximumLength(100);
+
+        RuleFor(r => r.StartsAtUtc).NotEmpty();
+        RuleFor(r => r.CategoryId).NotEmpty();
+        RuleFor(r => r.EndsAtUtc)
+            .Must((@event, endDate) => endDate > @event.StartsAtUtc)
+            .When(@event => @event.EndsAtUtc is not null)
+            .WithMessage(EventErrors.EndDateBeforeStartDate.Description);
+    }
+}
 
 internal sealed class HandlerCreateEventCommand(
     IEventRepository eventRepository,

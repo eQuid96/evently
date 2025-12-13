@@ -3,6 +3,7 @@ using Evently.Modules.Events.Domain.TicketType;
 using Evently.Shared.Application.Communication;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Domain;
+using FluentValidation;
 
 namespace Evently.Modules.Events.Application.TicketTypes;
 
@@ -13,6 +14,18 @@ public record CommandCreateTicketType(
     decimal Quantity,
     string Currency) : ICommand<TicketTypeResponse>;
 
+
+internal sealed class ValidatorCommandCreateTicketType : AbstractValidator<CommandCreateTicketType>
+{
+    public ValidatorCommandCreateTicketType()
+    {
+        RuleFor(c => c.EventId).NotEmpty();
+        RuleFor(c => c.Name).NotEmpty().MaximumLength(100);
+        RuleFor(c => c.Price).GreaterThan(decimal.Zero);
+        RuleFor(c => c.Quantity).GreaterThan(decimal.Zero);
+        RuleFor(c => c.Currency).NotEmpty();
+    }
+}
 
 internal sealed class CommandHandlerCreateTicketType(
     IEventRepository eventRepository,

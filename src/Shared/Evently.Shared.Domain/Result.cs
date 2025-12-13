@@ -42,7 +42,7 @@ public class Result<T> : Result
     
     
     public static Result<T> Ok(T value) => new (true, Error.None, value);
-    
+    public static Result<T> ValidationFailure(Error error) => new(false, error, default);
     public static implicit operator Result<T>(T? value) => 
         value is not null ? Ok(value) : Failure<T>(Error.NullValue);
 

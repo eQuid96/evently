@@ -2,12 +2,23 @@
 using Evently.Shared.Application.Communication;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Domain;
+using FluentValidation;
 
 namespace Evently.Modules.Events.Application.TicketTypes;
 
 public sealed record CommandUpdateTicketTypePrice(Guid TicketTypeId, decimal NewPrice) 
     : ICommand<TicketTypeResponse>;
 
+
+
+internal sealed class ValidatorCommandUpdateTicketTypePrice : AbstractValidator<CommandUpdateTicketTypePrice>
+{
+    public ValidatorCommandUpdateTicketTypePrice()
+    {
+        RuleFor(c => c.TicketTypeId).NotEmpty();
+        RuleFor(c => c.NewPrice).GreaterThan(decimal.Zero);
+    }
+}
 
 internal sealed class CommandHandlerUpdateTicketTypePrice(
     ITicketTypeRepository ticketTypeRepository,

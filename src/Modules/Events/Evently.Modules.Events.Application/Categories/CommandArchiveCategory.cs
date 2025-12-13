@@ -2,11 +2,19 @@
 using Evently.Shared.Application.Communication;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Domain;
+using FluentValidation;
 
 namespace Evently.Modules.Events.Application.Categories;
 
 public sealed record CommandArchiveCategory(Guid CategoryId) : ICommand;
 
+internal sealed class ValidatorCommandArchiveCategory : AbstractValidator<CommandArchiveCategory>
+{
+    public ValidatorCommandArchiveCategory()
+    {
+        RuleFor(r => r.CategoryId).NotEmpty();
+    }
+}
 
 internal sealed class CommandHandlerArchiveCategory(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork) 
     : ICommandHandler<CommandArchiveCategory>

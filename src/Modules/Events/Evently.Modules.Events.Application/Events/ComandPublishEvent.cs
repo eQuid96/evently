@@ -2,11 +2,19 @@
 using Evently.Shared.Application.Communication;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Domain;
+using FluentValidation;
 
 namespace Evently.Modules.Events.Application.Events;
 
 public sealed record CommandPublishEvent(Guid EventId) : ICommand;
 
+internal sealed class ValidatorCommandPublishEvent : AbstractValidator<CommandPublishEvent>
+{
+    public ValidatorCommandPublishEvent()
+    {
+        RuleFor(r => r.EventId).NotEmpty();
+    }
+}
 
 internal sealed class CommandHandlerPublishEvent(IEventRepository eventRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<CommandPublishEvent>
