@@ -1,4 +1,6 @@
-﻿namespace Evently.Modules.Events.Application.Events;
+﻿using Evently.Modules.Events.Application.TicketTypes;
+
+namespace Evently.Modules.Events.Application.Events;
 
 public sealed record EventResponse(
     Guid Id,
@@ -8,4 +10,7 @@ public sealed record EventResponse(
     DateTime StartsAt,
     Guid CategoryId,
     string Category,
-    DateTime? EndsAt);
+    DateTime? EndsAt)
+{
+    public List<TicketTypeResponse> TicketTypes { get; } = [];
+}

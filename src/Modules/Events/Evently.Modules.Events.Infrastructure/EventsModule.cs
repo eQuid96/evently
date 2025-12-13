@@ -1,8 +1,10 @@
 ﻿using Evently.Modules.Events.Domain.Categories;
 using Evently.Modules.Events.Domain.Events;
+using Evently.Modules.Events.Domain.TicketType;
 using Evently.Modules.Events.Infrastructure.Categories;
 using Evently.Modules.Events.Infrastructure.Database;
 using Evently.Modules.Events.Infrastructure.Events;
+using Evently.Modules.Events.Infrastructure.TicketTypes;
 using Evently.Shared.Application.Data;
 using Evently.Shared.Presentation;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ public static class EventsModule
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<EventsDbContext>());
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
         
         //Register all EndPoints to DI
         services.AddEndPoints(Presentation.AssemblyReference.Assembly);

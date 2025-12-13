@@ -38,4 +38,15 @@ public class TicketType : Entity
         ticket.RaiseEvent(new TicketTypeCreatedDomainEvent(ticket.Id));
         return ticket;
     }
+
+    public void UpdatePrice(decimal newPrice)
+    {
+        if (Price == newPrice)
+        {
+            return;
+        }
+
+        Price = newPrice;
+        RaiseEvent(new TicketTypePriceChangedDomainEvent(Id, newPrice));
+    }
 }
