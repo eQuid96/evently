@@ -5,7 +5,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-namespace Evently.Shared.Application.Validation;
+namespace Evently.Shared.Application.Pipelines;
 
 
 internal sealed class RequestValidationPipelineBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)

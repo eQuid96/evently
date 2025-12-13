@@ -1,3 +1,4 @@
+using Evently.Api;
 using Evently.Api.Extensions;
 using Evently.Modules.Events.Infrastructure;
 using Evently.Shared.Application;
@@ -22,6 +23,9 @@ builder.Services.AddEventlyInfrastructure(dbConnectionString);
 
 builder.Services.AddEventsModule(builder.Configuration);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,5 +40,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 app.MapEndPoints();
+app.UseExceptionHandler();
 
 await app.RunAsync();

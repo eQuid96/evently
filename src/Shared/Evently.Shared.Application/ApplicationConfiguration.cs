@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
-using Evently.Shared.Application.Logging;
-using Evently.Shared.Application.Validation;
+using Evently.Shared.Application.Pipelines;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +12,8 @@ public static class ApplicationConfiguration
         services.AddMediatR(mediatr =>
         {
             mediatr.RegisterServicesFromAssemblies(assemblies);
+            
+            mediatr.AddOpenBehavior(typeof(RequestExceptionPipelineBehaviour<,>));
             mediatr.AddOpenBehavior(typeof(RequestLoggerPipelineBehaviour<,>));
             mediatr.AddOpenBehavior(typeof(RequestValidationPipelineBehaviour<,>));
         });
