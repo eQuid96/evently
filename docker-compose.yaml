@@ -12,6 +12,7 @@
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - "5001:8080"
+  
   evently.db:
     image: postgres
     healthcheck:
@@ -36,3 +37,9 @@
     ports:
       - "5341:5341"
       - "8081:80"
+  
+  evently.redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"

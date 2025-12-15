@@ -2,6 +2,8 @@
 
     <ItemGroup>
         <PackageReference Include="EFCore.NamingConventions" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     </ItemGroup>
   <ItemGroup>

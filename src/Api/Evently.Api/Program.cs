@@ -18,8 +18,8 @@ builder.Services.AddSwaggerGen(swagger =>
 builder.Services.AddEventlyApplication([Evently.Modules.Events.Application.AssemblyReference.Assembly]);
 
 string dbConnectionString = builder.Configuration.GetConnectionString("EventsDatabase")!;
-
-builder.Services.AddEventlyInfrastructure(dbConnectionString);
+string redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+builder.Services.AddEventlyInfrastructure(dbConnectionString, redisConnectionString);
 
 builder.Services.AddEventsModule(builder.Configuration);
 
