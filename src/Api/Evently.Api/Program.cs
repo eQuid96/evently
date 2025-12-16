@@ -3,6 +3,7 @@ using Evently.Api.Extensions;
 using Evently.Modules.Events.Infrastructure;
 using Evently.Shared.Application;
 using Evently.Shared.Infrastructure;
+using Evently.Shared.Infrastructure.HealthChecks;
 using Evently.Shared.Presentation;
 using Serilog;
 
@@ -26,6 +27,9 @@ builder.Services.AddEventsModule(builder.Configuration);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+builder.Services.AddHealthChecks()
+    .AddNpgSql(dbConnectionString);
+
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 app.MapEndPoints();
+app.MapHealthChecks("health");
 app.UseExceptionHandler();
 
 await app.RunAsync();
