@@ -21,4 +21,23 @@ public static class HealthCheckExtensions
         builder.Add(registration);
         return builder;
     }
+
+
+    public static IHealthChecksBuilder AddRedis(
+        this IHealthChecksBuilder builder,
+        string connectionString,
+        HealthStatus? failureStatus = null,
+        IEnumerable<string>? tags = default)
+    {
+
+        HealthCheckRegistration redis = new(
+            RedisHealthCheck.Name,
+            services => new RedisHealthCheck(connectionString),
+            failureStatus, 
+            tags
+            );
+
+        builder.Add(redis);
+        return builder;
+    }
 }

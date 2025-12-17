@@ -8,7 +8,7 @@ internal sealed class NpgsqlHealthCheck(string connectionString) : IHealthCheck
     public const string Name = "Npgsql";
     private const string HealthCheckQuery = "SELECT 1;";
 
-    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
+    public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
         try
         {
