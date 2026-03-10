@@ -28,7 +28,8 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks()
-    .AddNpgSql(dbConnectionString);
+    .AddNpgSql(dbConnectionString)
+    .AddRedis(redisConnectionString);
 
 WebApplication app = builder.Build();
 

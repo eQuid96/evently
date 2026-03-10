@@ -5,15 +5,12 @@
   <ItemGroup Label="Database">
     <PackageVersion Include="Dapper" Version="2.1.66" />
     <PackageVersion Include="EFCore.NamingConventions" Version="10.0.0-rc.2" />
-    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
   </ItemGroup>
-    
-    <ItemGroup Label=".NET Core">
-        <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.1" />
-    </ItemGroup>
-    
+  <ItemGroup Label=".NET Core">
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.1" />
+  </ItemGroup>
   <ItemGroup Label="Caching">
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="10.0.1" />
@@ -31,6 +28,8 @@
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageVersion Include="MediatR" Version="14.0.0" />
+      <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+      <PackageVersion Include="MediatR" Version="14.0.0" />
+      <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
   </ItemGroup>
 </Project>
